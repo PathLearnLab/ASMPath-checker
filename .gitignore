@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE & Editors
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Local checker runtime artifacts
+source/
+*.o
+solution
+gdb_logic.txt
+stdin_input.txt
+prog_output.txt
