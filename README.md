@@ -38,7 +38,23 @@ After execution, the checker writes:
 #### Input: `test_cases.json`
 * `initialState` and `stdin` are **optional**.
 * At least one expected assertion (`expectedState` or `expectedStdout`) is **required** per test case.
-* Keys starting with `$` denote CPU registers (e.g., `$rax`), keys starting with `&` denote memory labels/addresses (e.g., `&result`).
+* Keys starting with `$` denote CPU registers (e.g., `$rax`).
+* Keys starting with `&` denote memory labels/addresses and support explicit type annotations using the `&varname:<type>` syntax (defaults to `uchar` if `<type>` is omitted).
+
+**Supported Memory Types:**
+
+| Format | NASM / Size | Description |
+| :--- | :--- | :--- |
+| `&varname:uchar` *(or `&varname`)* | `db` (1 byte) | Unsigned 8-bit integer ($0 \dots 255$) |
+| `&varname:schar` | `db` (1 byte) | Signed 8-bit integer ($-128 \dots 127$) |
+| `&varname:ushort` | `dw` (2 bytes) | Unsigned 16-bit integer ($0 \dots 65\,535$) |
+| `&varname:short` | `dw` (2 bytes) | Signed 16-bit integer ($-32\,768 \dots 32\,767$) |
+| `&varname:uint` | `dd` (4 bytes) | Unsigned 32-bit integer ($0 \dots 2^{32}-1$) |
+| `&varname:int` | `dd` (4 bytes) | Signed 32-bit integer ($-2^{31} \dots 2^{31}-1$) |
+| `&varname:ulong` | `dq` (8 bytes) | Unsigned 64-bit integer ($0 \dots 2^{64}-1$) |
+| `&varname:long` | `dq` (8 bytes) | Signed 64-bit integer ($-2^{63} \dots 2^{63}-1$) |
+| `&varname:float` | `dd` (4 bytes) | Single-precision floating-point |
+| `&varname:double` | `dq` (8 bytes) | Double-precision floating-point |
 
 ```json
 {
@@ -53,7 +69,8 @@ After execution, the checker writes:
         "$rsi": 15
       },
       "expectedState": {
-        "$rax": 25
+        "$rax": 25,
+        "&result:int": 25
       },
       "stdin": [],
       "expectedStdout": []
@@ -80,8 +97,8 @@ Internal `description` fields are stripped from the output so test hints are not
       "timeoutReached": false,
       "error": false,
       "errorInfo": null,
-      "actualState": { "$rax": 25 },
-      "expectedState": { "$rax": 25 },
+      "actualState": { "$rax": 25, "&result:int": 25 },
+      "expectedState": { "$rax": 25, "&result:int": 25 },
       "actualStdout": [],
       "expectedStdout": []
     }
@@ -125,7 +142,23 @@ Internal `description` fields are stripped from the output so test hints are not
 #### Входные данные: `test_cases.json`
 * Поля `initialState` и `stdin` являются **необязательными**.
 * Наличие хотя бы одного ожидаемого результата (`expectedState` или `expectedStdout`) **обязательно**.
-* Ключи с префиксом `$` обозначают регистры процессора (например, `$rax`), с префиксом `&` — адреса/метки в памяти (например, `&buffer`).
+* Ключи с префиксом `$` обозначают регистры процессора (например, `$rax`).
+* Ключи с префиксом `&` обозначают адреса/метки в памяти и поддерживают явное указание типа в формате `&varname:<type>` (если `<type>` не указан, по умолчанию используется `uchar`).
+
+**Поддерживаемые типы переменных памяти:**
+
+| Формат | NASM / Размер | Описание типа |
+| :--- | :--- | :--- |
+| `&varname:uchar` *(или `&varname`)* | `db` (1 байт) | Беззнаковое целое ($0 \dots 255$) |
+| `&varname:schar` | `db` (1 байт) | Знаковое целое ($-128 \dots 127$) |
+| `&varname:ushort` | `dw` (2 байта) | Беззнаковое целое ($0 \dots 65\,535$) |
+| `&varname:short` | `dw` (2 байта) | Знаковое целое ($-32\,768 \dots 32\,767$) |
+| `&varname:uint` | `dd` (4 байта) | Беззнаковое целое ($0 \dots 2^{32}-1$) |
+| `&varname:int` | `dd` (4 байта) | Знаковое целое ($-2^{31} \dots 2^{31}-1$) |
+| `&varname:ulong` | `dq` (8 байт) | Беззнаковое целое ($0 \dots 2^{64}-1$) |
+| `&varname:long` | `dq` (8 байт) | Знаковое целое ($-2^{63} \dots 2^{63}-1$) |
+| `&varname:float` | `dd` (4 байта) | Вещественное (одинарная точность) |
+| `&varname:double` | `dq` (8 байт) | Вещественное (двойная точность) |
 
 ```json
 {
@@ -140,7 +173,8 @@ Internal `description` fields are stripped from the output so test hints are not
         "$rsi": 15
       },
       "expectedState": {
-        "$rax": 25
+        "$rax": 25,
+        "&result:int": 25
       },
       "stdin": [],
       "expectedStdout": []
@@ -167,8 +201,8 @@ Internal `description` fields are stripped from the output so test hints are not
       "timeoutReached": false,
       "error": false,
       "errorInfo": null,
-      "actualState": { "$rax": 25 },
-      "expectedState": { "$rax": 25 },
+      "actualState": { "$rax": 25, "&result:int": 25 },
+      "expectedState": { "$rax": 25, "&result:int": 25 },
       "actualStdout": [],
       "expectedStdout": []
     }
