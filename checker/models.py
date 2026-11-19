@@ -9,9 +9,9 @@ class ExerciseTestCase:
     initial_state: Dict[str, Any] = field(default_factory=dict)
     expected_state: Dict[str, Any] = field(default_factory=dict)
     stdin: List[str] = field(default_factory=list)
-    expected_stdout: List[str] = field(dafault_factory=list)
+    expected_stdout: List[str] = field(default_factory=list)
 
-    @staticmethod
+    @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "ExerciseTestCase":
         return cls(
             id=str(data.get("id", "")),
@@ -47,9 +47,9 @@ class TestCaseResult:
     error: bool
     error_info: Optional[str] = None
     actual_state: Dict[str, Any] = field(default_factory=dict)
-    expected_state: Dict[str, Any] = field(dafault_factory=dict)
-    actual_stdout: List[str] = field(dafault_factory=list)
-    expected_stdout: List[str] = field(dafault_factory=list)
+    expected_state: Dict[str, Any] = field(default_factory=dict)
+    actual_stdout: List[str] = field(default_factory=list)
+    expected_stdout: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -57,7 +57,7 @@ class TestCaseResult:
             "passed": self.passed,
             "timeoutReached": self.timeout_reached,
             "error": self.error,
-            "error_info": self.error_info,
+            "errorInfo": self.error_info,
             "actualState": self.actual_state,
             "expectedState": self.expected_state,
             "actualStdout": self.actual_stdout,
@@ -73,7 +73,7 @@ class CheckingReport:
     total_tests: int = 0
     passed_tests: int = 0
     accepted: bool = False
-    results: List[TestCaseResult]
+    results: List[TestCaseResult] = field(default_factory=list)
 
     @classmethod
     def from_results(cls, results: List[TestCaseResult]) -> "CheckingReport":
